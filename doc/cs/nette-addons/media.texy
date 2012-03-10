@@ -1,5 +1,5 @@
-Doctrine - Nette Addon
-**********************
+Media - Nette Addon
+*******************
 
 .[perex]
 Balíček obstarávající media pro "Nette Framework":http://nette.org.
@@ -70,3 +70,31 @@ Formát
 Formát je definice filtru, který se aplikuje na obrázek při zmenšování (ukládání do cache). Vedle výšky a šířky umožňuje nastavit také "ořez"((pložka crop v configu)) a "způsob zmenšení / zvětšení"((položka flags v configu)). "Způsob zmenšení"((nebo taky mód)) odpovídá číselné hodnotě "Nette\Image":http://api.nette.org/2.0/Nette.Image.html "modifikátorů"((konstant)), např.: `\Nette\Image::FILL | \Nette\Image::ENLARGE` odpovídá 4. 
 
 Další schopností formátu je aplikace vodoznaku. Nastavíme "soubor s obrázkem vodoznaku"((položka watermark v configu)). Také můžeme nastavit jeho průhlednost a pozici. Pro nastavení pozice používáme konstanty `Nella\NetteAddons\Media\IImageFormat::POSITION_*`.
+
+Storage
+========
+
+Soubory se standartně ukládají ve do `%appDir%/storage/files` resp. obrázky do `%appDir%/storage/images`.
+
+/--latte
+<img n:src="'logo', 'default', 'png'"> {* %appDir%/storage/images/logo.png *}
+\--
+
+Makra
+=====
+
+Soubory
+-------
+První parametr soubor (string, proměnná obsahující string nebo [api:Nella\NetteAddons\Media\IFile]).
+
+- `{file $file}`
+- `n:fhref="$file"`
+
+Obrázky
+-------
+První parametr obrázek (string, proměnná obsahující string nebo [api:Nella\NetteAddons\Media\IImage]), druhý parametr formát (string, proměnná obsahující string nebo [api:Nella\NetteAddons\Media\IFormatImage]) a poslední parametr typ je nepovinný (string, proměnná, v případě že není vyplněn použije se 'jpg' nebo pokud byl obrázek zadán jako [Image | api:Nella\NetteAddons\Media\IImage] použije ste stejný)
+
+- `{image $image, $format, $type}`
+- `{img $image, $format, $type}`
+- `n:src="$image, $format, $type"`
+- `n:ihref="$image, $format, $type"`
