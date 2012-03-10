@@ -18,7 +18,7 @@ Registrace
   1) nastavit doctrine console `console: {entityManager: default}`
   2) přidat službu `console: @doctrine.console`
 4) upravit `config.neon`
-/--code
+/--neon
 common:
 	parameters:
 		database:
@@ -74,7 +74,7 @@ Další informace
 Pokud potřebujete zaregistrovat vlastní listener stačí mu nastavit tag `'doctrineListener'`.
 
 více instancí entity manageru (se stejným spojením):
-/--code
+/--neon
 doctrine:
 	entityManagers:
 		myEntityManager:
@@ -82,7 +82,7 @@ doctrine:
 \--
 
 více instancí entity manageru (se novým spojením):
-/--code
+/--neon
 doctrine:
 	connections:
 		myConnection: %database2%

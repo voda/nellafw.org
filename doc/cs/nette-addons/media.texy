@@ -15,7 +15,7 @@ Registrace
  a) před `$container = $configurator->createContainer();` přidat registraci balíčku `Nella\NetteAddons\Media\Config\Extension::register($configurator);`
 3) vytvořit zapisovatelné složky `%appDir%/storage` a `%wwwDir%/images`
 4) upravit `config.neon`
-/--code
+/--neon
 common:
 	parameters:
 		database:
