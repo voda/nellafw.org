@@ -1,0 +1,96 @@
+Doctrine - Nette Addon
+**********************
+
+.[perex]
+Balíček obstarávající napojení "Doctrine ORM 2":http://www.doctrine-project.org/projects/orm.html do "Nette Frameworku":http://nette.org.
+
+.[tip]
+Repozitář balíčku na "githubu":https://github.com/nella/nette-addon-doctrine a "sandbox":https://github.com/Vrtak-CZ/nette-doctrine-sandbox.
+
+Registrace
+==========
+
+1) "Stáhnout si Doctrine ORM":http://www.doctrine-project.org/projects/orm/download a rozbalit obsah složky `DoctrineORM-2.2.x/Doctrine` do *libs* (případně pokud chcete používat i "Doctrine Migrations":https://github.com/doctrine/migrations/downloads).
+2) "Stáhnout Package":https://github.com/nella/nette-addon-doctrine/zipball/master a obsah rozbalit do *libs/Nella/NetteAddons/Doctrine*.
+3) upravit `bootstrap.php`
+ a) před `$container = $configurator->createContainer();` přidat registraci balíčku `Nella\NetteAddons\Doctrine\Config\Extension::register($configurator);` (pokud chcete i migrations tak `Nella\NetteAddons\Doctrine\Config\MigrationsExtension::register($configurator);`)
+ b) nastavit symfony console
+  1) nastavit doctrine console `console: {entityManager: default}`
+  2) přidat službu `console: @doctrine.console`
+4) upravit `config.neon`
+/--code
+common:
+	parameters:
+		database:
+			driver: pdo_sqlite
+			path: %appDir%/models/db.sqlite
+
+	doctrine:
+		connections:
+			default: %database%
+
+		entityManagers:
+			default:
+				connection: default
+					
+		console:
+			entityManager: default
+				
+	migrations:
+		connection: @doctrine.connections.default
+\--
+
+Konfigurační volby
+==================
+Detailní dokumentaci najdete v "dokumentaci Doctrine":http://www.doctrine-project.org/docs/dbal/2.1/en/reference/configuration.html#getting-a-connection.
+
+Doctrine - Connections
+----------------------
+- **debugger** (výchozí "`TRUE`":http://addons.nette.org/cs/doctrine2panel - TRUE/FALSE/služba SQLLoggeru)
+- **autowired** (výchozí `FALSE`)
+- **eventManager** (výchozí `NULL` - defaultní doctrine)
+
+Doctrine - EntityManagers
+-------------------------
+- **entityDirs** (výchozí `array('%appDir%')`)
+- **proxyDir** (výchozí `'%appDir%/proxies'`)
+- **proxyNamespace** (výchozí `'App\Model\Proxies'`)
+- **proxyAutogenerate** (výchozí autodetekce na základě productionMode)
+- **useAnnotationNamespace** (výchozí `FALSE`)
+- **metadataFactory** class name (výchozí defaultní doctrine)
+- **metadataCacheDriver** (výchozí `'@doctrine.cache'` - používá *@cacheStorage*)
+- **queryCacheDriver** (výchozí `'@doctrine.cache'` - používá *@cacheStorage*)
+- **resultCacheDriver** (výchozí `NULL`)
+
+Migrations
+----------
+- **name** (výchozí `'Nette Framework DB Migrations'`)
+- **table** (výchozí `"db_version"`)
+- **directory** (výchozí `"%appDir%/migrations"`)
+- **namespace** (výchozí `'App\Model\Migrations'`)
+
+Další informace
+===============
+Pokud potřebujete zaregistrovat vlastní listener stačí mu nastavit tag `'doctrineListener'`.
+
+více instancí entity manageru (se stejným spojením):
+/--code
+doctrine:
+	entityManagers:
+		myEntityManager:
+			connection: default
+\--
+
+více instancí entity manageru (se novým spojením):
+/--code
+doctrine:
+	connections:
+		myConnection: %database2%
+			
+	entityManagers:
+		myEntityManager:
+			connection: myConnection
+\--
+
+Jako storage pro cache se použije automaticky *cacheStorage* z Nette.
+
