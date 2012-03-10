@@ -1,0 +1,69 @@
+Doctrine - Nette Addon
+**********************
+
+.[perex]
+Balíček obstarávající media pro "Nette Framework":http://nette.org.
+
+Registrace
+==========
+
+1) "Stáhnout Package":https://github.com/nella/nette-addon-media/zipball/master a obsah rozbalit do *libs/Nella/NetteAddons/Media*.
+2) upravit `bootstrap.php`
+ a) před `$container = $configurator->createContainer();` přidat registraci balíčku `Nella\NetteAddons\Media\Config\Extension::register($configurator);`
+3) vytvořit zapisovatelné složky `%appDir%/storage` a `%wwwDir%/images`
+4) upravit `config.neon`
+/--code
+common:
+	parameters:
+		database:
+			driver: pdo_sqlite
+			path: %appDir%/models/db.sqlite
+	media:
+		fileRoute: '/files/<file>.<ext>'
+
+		imageRoute: '/images/<format>/<image>.<type>'
+\--
+
+Konfigurační volby
+==================
+
+Routy
+-----
+- **fileRoute** - maska souborové routy
+- **imageRoute** - maska obrázkové routy
+
+Složky
+------
+- **imagePath** - složka s cache zmenšenin - musí odpovídat routě *imageRoute* (výchozí `'%wwwDir%/images'`)
+- **fileStorageDir** - složka se soubory (výchozí `'%appDir%/storage/files'`)
+- **imageStorageDir** - složka s originálnímy obrázky (výchozí `'%appDir%/storage/images'`)
+
+Formát obrázků
+---------------
+- **width**
+- **height** 
+- **crop** - oříznout obrázek (výchozí `false`)
+- **flags** - módy úprav (výchozí `4`)
+- **watermark** - obrázek vodoznaku (výchozí `null`)
+- **watermarkPosition** - pozice vodoznaku (výchozí `null`)
+- **watermarkOpacity** - průhlednost vodoznaku (výchozí `null`)
+
+Služby
+------
+- **fileStorage** - (výchozí [api:Nella\NetteAddons\Media\Storages\File])
+- **filePresenterCallback** - (výchozí [api:Nella\NetteAddons\Media\Callbacks\FilePresenterCallback])
+- **fileDao** - (výchozí [api:Nella\NetteAddons\Media\Model\FileDao])
+- **fileRoute** - (výchozí [api:Nella\NetteAddons\Media\Routes\FileRoute])
+- **imageStorage** - (výchozí [api:Nella\NetteAddons\Media\Storages\File])
+- **imageCacheStorage** - (výchozí [api:Nella\NetteAddons\Media\ImageCacheStorages\File])
+- **imagePresenterCallback** - (výchozí [api:Nella\NetteAddons\Media\Callbacks\ImagePresenterCallback])
+- **imageDao** - (výchozí [api:Nella\NetteAddons\Media\Model\ImageDao])
+- **imageFormatDao** - (výchozí [api:Nella\NetteAddons\Media\Model\ImageFormatDao])
+- **imageRoute** - (výchozí [api:Nella\NetteAddons\Media\Routes\ImageRoute])
+
+Formát
+======
+
+Formát je definice filtru, který se aplikuje na obrázek při zmenšování (ukládání do cache). Vedle výšky a šířky umožňuje nastavit také "ořez"((pložka crop v configu)) a "způsob zmenšení / zvětšení"((položka flags v configu)). "Způsob zmenšení"((nebo taky mód)) odpovídá číselné hodnotě "Nette\Image":http://api.nette.org/2.0/Nette.Image.html "modifikátorů"((konstant)), např.: `\Nette\Image::FILL | \Nette\Image::ENLARGE` odpovídá 4. 
+
+Další schopností formátu je aplikace vodoznaku. Nastavíme "soubor s obrázkem vodoznaku"((položka watermark v configu)). Také můžeme nastavit jeho průhlednost a pozici. Pro nastavení pozice používáme konstanty `Nella\NetteAddons\Media\IImageFormat::POSITION_*`.
