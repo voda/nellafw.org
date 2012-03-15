@@ -1,0 +1,45 @@
+Přetěžování
+***********
+
+.[perex]
+Přetěžování presenterů a šablon pro snadné využití v aplikacích s hodně instancemi.
+
+Pokud máte aplikaci, kterou nasazujete ve spoustě instancí a každá z nich má svá specifika hodíse možnost snadného přetěžování. Nella Framework vám v tom vychází vstříc protože vám umožňuje snadné přetěžování šablona a presenterů.
+
+Presentery
+==========
+
+Máte presenter pro zobrazení seznamu článků *Article:ArticleFrontend* a potřebujete v jedné instanci vašeho systému přidat nějaké speciální filtrování? Není problém prostě si implementaci *Article:ArticleFrontend* presenteru ze společné codebase přetížíte.
+
+Implementace originálního presenteru je reprezentována třídou `CMS\ArticleModule\ArticleFrontendPresenter`. Přetížíme si ho tak že vytvoříme `App\ArticleModule\ArticleFrontendPresenter` který podědí původní presenter a upraví co potřebuje.
+
+Aby nám to fungovalo musíme do presenterFactory zaregistrovat naše namespace.
+
+/--php
+$container->nette->presenterFactory
+	->addNamespace('App', 1)
+	->addNamespace('CMS', 9);
+\--
+
+Čísla udávají prioritu. Čím nižší tím vyšší priorita.
+
+Šablony
+=======
+
+Máte šablonu pro zobrazení seznamu článků a potřebujete v jedné instanci vašeho systému přidat ke každému článku obrázek? Není problém prostě si vytvoříte novou šablonu a nastavíme přesně co potřebujeme.
+
+/--code
+/app/templates/Article/ArticleFrontend/list.latte // šablona specifická pro danou instanci
+/libs/CMS/templates/Article/ArticleFrontend/list.latte // původní / společná šablona
+\--
+
+Aby nám to fungovalo musíme do presenterFactory zaregistrovat naše složky.
+
+/--php
+$container->nella->templateFilesFormatter
+	->addDir('%appDir%', 1)
+	->addNamespace('%libsDir%/CMS', 9);
+\--
+
+Čísla udávají prioritu. Čím nižší tím vyšší priorita.
+
