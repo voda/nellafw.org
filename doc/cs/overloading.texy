@@ -4,7 +4,7 @@ Přetěžování
 .[perex]
 Přetěžování presenterů a šablon pro snadné využití v aplikacích s hodně instancemi.
 
-Pokud máte aplikaci, kterou nasazujete ve spoustě instancí a každá z nich má svá specifika hodíse možnost snadného přetěžování. Nella Framework vám v tom vychází vstříc protože vám umožňuje snadné přetěžování šablona a presenterů.
+Pokud máte aplikaci, kterou nasazujete ve spoustě instancí a každá z nich má svá specifika hodí se možnost snadného přetěžování. Nella Framework vám v tom vychází vstříc protože vám umožňuje snadné přetěžování šablona a presenterů.
 
 Presentery
 ==========
